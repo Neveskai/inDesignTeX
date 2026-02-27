@@ -1,0 +1,15 @@
+{
+  "name": "indesigntex",
+  "version": "1.0.0",
+  "description": "Editor de código LaTeX para InDesign usando UXP",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix backend",
+    "start": "npm start --prefix backend",
+    "lint": "npm run lint --prefix backend",
+    "test": "npm test --prefix backend",
+    "install:backend": "npm install --prefix backend"
+  },
+  "author": "Wendell Neves",
+  "license": "MIT"
+}

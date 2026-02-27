@@ -2,31 +2,50 @@
 
 ## Project Overview
 
-**inDesignTeX** — A LaTeX code editor plugin for Adobe InDesign using UXP (Unified Extensibility Platform).
+**inDesignTeX** — A LaTeX code editor plugin for Adobe InDesign using UXP (Unified Extensibility Platform). Renders LaTeX equations as EPS files and inserts them directly into InDesign documents.
 
-- **Language/Ecosystem:** JavaScript/TypeScript (Node.js)
-- **License:** MIT
+### Architecture
+
+- **`backend/`** — Express.js server (TexLive Server) that converts LaTeX to EPS via `latex` + `dvips`
+- **`plugin/`** — UXP panel plugin for Adobe InDesign (vanilla JS, no build step)
+- **`docker-compose.yml`** — Production deployment config
 
 ## Cursor Cloud specific instructions
 
-### Repository State
+### Running the Backend
 
-This is a greenfield repository. As of the initial commit it contains only `README.md`, `LICENSE`, and `.gitignore` (Node.js template). There is no `package.json`, no source code, and no runnable application yet.
+```bash
+cd backend && npm run dev
+```
 
-### Development Environment
+The server runs on `http://localhost:3000`. Use the dev API key from `backend/.env` for testing: `dev-api-key-indesigntex-2026`.
 
-- **Node.js:** v22.x is available via nvm.
-- **Package managers:** npm, pnpm, and yarn are all available. No lockfile exists yet, so the project has not chosen a package manager.
-- **No dependencies to install:** Until a `package.json` is added, there is nothing to install.
+### Key API Endpoints
 
-### Building / Running / Testing
+- `GET /api/health` — no auth required
+- `POST /api/latex/render` — requires `X-API-Key` header, returns EPS binary
+- `POST /api/latex/validate` — requires `X-API-Key` header, returns JSON
 
-There are no build, lint, test, or dev scripts defined. Once source code is added:
+### System Dependencies
 
-1. Check for a `package.json` and install dependencies using the matching package manager (look for lockfile).
-2. Follow any scripts defined in `package.json` (e.g., `dev`, `build`, `lint`, `test`).
-3. UXP plugins for InDesign require Adobe InDesign and the UXP Developer Tools CLI to load/debug — these cannot run in a headless cloud VM.
+The backend requires TexLive packages installed on the host:
+- `texlive-base`, `texlive-latex-base`, `texlive-latex-extra`, `texlive-fonts-recommended`
+- `dvipng`, `ghostscript`
+
+These are NOT managed by `npm install`. If `latex` or `dvips` are missing, install them:
+```bash
+sudo apt-get install -y texlive-base texlive-latex-base texlive-fonts-recommended texlive-latex-extra dvipng ghostscript
+```
+
+### Lint / Test / Build
+
+Standard commands from the repo root (see `package.json` scripts):
+- **Lint:** `npm run lint`
+- **Test:** `npm test`
+- **Dev server:** `npm run dev`
 
 ### Caveats
 
-- Adobe UXP plugin development requires a local Adobe InDesign installation for end-to-end testing. Cloud agents can only perform linting, unit testing, and build verification — not live plugin testing in InDesign.
+- The `standalone` document class with `varwidth` option is used for wrapping bare LaTeX equations. Display math (`\[...\]`) requires `\noindent` prefix — this is handled automatically by the renderer.
+- The UXP plugin (`plugin/`) has no build step — it's pure HTML/CSS/JS loaded directly by InDesign's UXP Developer Tools. It cannot be tested in a headless environment; it requires Adobe InDesign >= v18.5.
+- The `plugin/icons/icon-24.png` is a placeholder — replace with a real 24x24 PNG icon before distribution.
