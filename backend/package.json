@@ -1,0 +1,30 @@
+{
+  "name": "indesigntex-backend",
+  "version": "1.0.0",
+  "description": "TexLive Server - LaTeX to EPS rendering API for inDesignTeX",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "lint": "eslint src/",
+    "test": "node --test src/**/*.test.js"
+  },
+  "keywords": ["latex", "eps", "texlive", "indesign", "uxp"],
+  "author": "Wendell Neves",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.20.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
