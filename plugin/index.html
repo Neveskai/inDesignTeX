@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Settings Panel (collapsible) -->
+    <details id="settings-section">
+      <summary class="section-header">⚙ Configurações</summary>
+      <div class="settings-form">
+        <label for="server-url">Servidor Backend</label>
+        <input type="text" id="server-url" value="http://localhost:3000" placeholder="http://localhost:3000" />
+        <label for="api-key">API Key</label>
+        <input type="password" id="api-key" placeholder="Sua chave de API" />
+        <button id="btn-save-settings" class="btn btn-secondary btn-small">Salvar</button>
+        <span id="settings-status" class="status-text"></span>
+      </div>
+    </details>
+
+    <!-- Editor -->
+    <div id="editor-section">
+      <div class="section-header">
+        <span>📝 Editor LaTeX</span>
+        <div class="header-actions">
+          <button id="btn-templates" class="btn btn-icon" title="Templates">☰</button>
+        </div>
+      </div>
+
+      <textarea id="latex-input" rows="8" placeholder="Digite sua equação LaTeX aqui...&#10;&#10;Exemplo: $E = mc^2$&#10;&#10;Ou modo display:&#10;\[ \int_{0}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2} \]" spellcheck="false"></textarea>
+
+      <!-- Templates dropdown -->
+      <div id="templates-dropdown" class="dropdown hidden">
+        <div class="dropdown-item" data-template="$E = mc^2$">Einstein (E=mc²)</div>
+        <div class="dropdown-item" data-template="\[ \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6} \]">Série de Basel</div>
+        <div class="dropdown-item" data-template="\[ \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi} \]">Integral Gaussiana</div>
+        <div class="dropdown-item" data-template="\[ \frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u \]">Equação da Onda</div>
+        <div class="dropdown-item" data-template="\[ \mathbf{F} = m\mathbf{a} = m\frac{d^2\mathbf{r}}{dt^2} \]">Segunda Lei de Newton</div>
+        <div class="dropdown-item" data-template="\[ e^{i\pi} + 1 = 0 \]">Identidade de Euler</div>
+        <div class="dropdown-item" data-template="\[ \begin{pmatrix} a & b \\ c & d \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} ax + by \\ cx + dy \end{pmatrix} \]">Multiplicação de Matrizes</div>
+      </div>
+
+      <div class="action-row">
+        <button id="btn-validate" class="btn btn-secondary">Validar</button>
+        <button id="btn-render" class="btn btn-primary">Renderizar EPS</button>
+        <button id="btn-insert" class="btn btn-success" disabled>Inserir no Documento</button>
+      </div>
+    </div>
+
+    <!-- Status & Preview -->
+    <div id="status-section">
+      <div id="status-bar" class="status-bar">
+        <span id="status-icon">●</span>
+        <span id="status-message">Pronto</span>
+      </div>
+    </div>
+
+    <!-- History -->
+    <details id="history-section">
+      <summary class="section-header">📋 Histórico</summary>
+      <div id="history-list" class="history-list">
+        <p class="empty-state">Nenhuma equação renderizada ainda.</p>
+      </div>
+    </details>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
