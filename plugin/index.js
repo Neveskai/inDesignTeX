@@ -12,7 +12,7 @@ let lastLatex = null;
 function getSettings() {
   return {
     serverUrl: localStorage.getItem(STORAGE_KEYS.SERVER_URL) || 'http://localhost:3000',
-    apiKey: localStorage.getItem(STORAGE_KEYS.API_KEY) || '',
+    apiKey: localStorage.getItem(STORAGE_KEYS.API_KEY) || 'dev-api-key-indesigntex-2026',
   };
 }
 
@@ -82,6 +82,11 @@ async function validateLatex() {
   try {
     const response = await callApi('/api/latex/validate', { latex });
     const data = await response.json();
+
+    if (!response.ok) {
+      setStatus('error', data.error || `Erro HTTP ${response.status}`);
+      return;
+    }
 
     if (data.valid) {
       setStatus('success', 'LaTeX válido ✓');
